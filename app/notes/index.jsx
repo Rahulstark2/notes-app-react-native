@@ -1,17 +1,35 @@
-import { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import { useEffect, useState } from 'react';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import NoteList from '@/components/NoteList';
 import AddNoteModal from '@/components/AddNoteModal';
+import NoteList from '@/components/NoteList';
+import noteService from '@/services/noteService';
 
 const NoteScreen = () => {
-    const [notes, setNotes] = useState([
-        { id: '1', text: 'Note One' },
-        { id: '2', text: 'Note Two' },
-        { id: '3', text: 'Note Three' }, 
-    ]);
+    const [notes, setNotes] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [newNote, setNewNote] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        fetchNotes();
+    }, []);
+
+    const fetchNotes = async () => {
+        setLoading(true);
+        const response = await noteService.getNotes();
+
+        if (response.error) {
+            setError(response.error);
+            Alert.alert('Error', response.error);
+        } else {
+            setNotes(response.data);
+            setError(null);
+        }
+
+        setLoading(false);
+    };
 
     // Add New Note
     const addNote = () => {
@@ -30,12 +48,12 @@ const NoteScreen = () => {
         <View style={styles.container}>
             <NoteList notes={notes} />
 
-                <TouchableOpacity style={styles.addButton} onPress={ () =>
-                    setModalVisible(true) } >
-                    <Text style={styles.addButtonText}>+ Add Note</Text>
-                </TouchableOpacity>
-                {/* Modal */}
-                <AddNoteModal
+            <TouchableOpacity style={styles.addButton} onPress={() =>
+                setModalVisible(true)} >
+                <Text style={styles.addButtonText}>+ Add Note</Text>
+            </TouchableOpacity>
+            {/* Modal */}
+            <AddNoteModal
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
                 newNote={newNote}
