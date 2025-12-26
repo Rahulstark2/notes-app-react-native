@@ -1,8 +1,7 @@
-import { View } from 'react-native';
+import { View, FlatList } from 'react-native';
 import NoteItem from './NoteItem';
-import { FlatList } from 'react-native-web';
 
-const NoteItem = ({ notes }) => {
+const NoteList = ({ notes }) => {
     return (
         <View>
             <FlatList
@@ -12,5 +11,7 @@ const NoteItem = ({ notes }) => {
                 renderItem={({ item }) => <NoteItem note={item} />}
                 />
         </View>
-    )
-}
+    );
+};
+
+export default NoteList;
