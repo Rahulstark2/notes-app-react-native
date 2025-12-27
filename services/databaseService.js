@@ -24,6 +24,7 @@ const databaseService = {
             };
         }
      },
+     
      // Delete Document
      async deleteDocument(dbId, colId, id) {
         try {
