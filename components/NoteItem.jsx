@@ -1,5 +1,5 @@
-import { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { useRef, useState } from 'react';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const NoteItem = ({ note, onDelete, onEdit }) => {
     const [isEditing, setIsEditing] = useState(false);
@@ -13,39 +13,36 @@ const NoteItem = ({ note, onDelete, onEdit }) => {
     };
 
     return (
-     <View style={styles.noteItem}>
-        {isEditing ? (
-            <TextInput
-                ref={inputRef}
-                style={styles.input}
-                value={editedText}
-                onChangeText={setEditedText}
-                autoFocus
-                onSubmitEditing={handleSave}
-                returnKeyType='done'
-            />
-        ) : (
-            <Text style={styles.noteText}>{note.text}</Text>
-        ) }
-         <View style={styles.actions}>
-         {isEditing ? (
-            <TouchableOpacity onPress={() => {
-                handleSave();
-                inputRef.current?.blur();
-            }}>
-                <Text style={styles.edit}>💾</Text>
-            </TouchableOpacity>
-         ) : (
-            <TouchableOpacity onPress={ () => setIsEditing(true) }>
-                <Text style={styles.edit}>✎</Text>
-         </TouchableOpacity>
-         )}
+        <View style={styles.noteItem}>
+            {isEditing ? (
+                <TextInput
+                    ref={inputRef}
+                    style={styles.input}
+                    value={editedText}
+                    onChangeText={setEditedText}
+                    autoFocus
+                    onSubmitEditing={handleSave}
+                    returnKeyType='done'
+                />
+            ) : (
+                <Text style={styles.noteText}>{note.text}</Text>
+            )}
+            <View style={styles.actions}>
+                {isEditing ? (
+                    <TouchableOpacity onPress={handleSave}>
+                        <Text style={styles.edit}>💾</Text>
+                    </TouchableOpacity>
+                ) : (
+                    <TouchableOpacity onPress={() => setIsEditing(true)}>
+                        <Text style={styles.edit}>✎</Text>
+                    </TouchableOpacity>
+                )}
 
-         <TouchableOpacity onPress={ () => onDelete(note.$id) }>
-                <Text style={styles.delete}>❌</Text>
-         </TouchableOpacity>
-         </View>
-    </View>
+                <TouchableOpacity onPress={() => onDelete(note.$id)}>
+                    <Text style={styles.delete}>❌</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
     );
 };
 
