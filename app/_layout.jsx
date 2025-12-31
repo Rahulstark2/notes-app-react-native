@@ -1,8 +1,9 @@
 import { Stack } from "expo-router";
+import { AuthProvider } from '@/contexts/AuthContext';
 
 const RootLayout = () => {
   return (
-  
+  <AuthProvider>
   <Stack
     screenOptions={{
       headerStyle: {
@@ -24,6 +25,7 @@ const RootLayout = () => {
     <Stack.Screen name = 'notes' options={{ headerTitle: 'Notes' }} />
 
     </Stack>
+    </AuthProvider>
   );
 }
 
